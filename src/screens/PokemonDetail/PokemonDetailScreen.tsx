@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LayoutWithTopBar from '../../components/Layout/LayoutWithTopBar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -15,12 +15,13 @@ import {RootStackParamList} from '../../types/navigation.type';
 import {getPokemonIndex} from '../../lib/utils/getPokemonIndex';
 import BadgePokemonType from '../../components/UI/Badge/BadgePokemonType';
 import {HeartIcon} from 'lucide-react-native';
+import {useFavorites} from '../../hooks/zustand/useFavorites';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PokemonDetail'>;
 
 export default function PokemonDetailScreen({route}: Props) {
-  const {data} = route.params;
-  const [isFavorite, setIsFavorite] = useState(false);
+  const {name, url, data} = route.params;
+  const {isFavorite, addFavorite, removeFavorite} = useFavorites();
 
   return (
     <SafeAreaView>
@@ -45,9 +46,19 @@ export default function PokemonDetailScreen({route}: Props) {
               </View>
               <TouchableOpacity
                 className="bg-slate-100 p-3 rounded-full"
-                onPress={() => setIsFavorite(!isFavorite)}>
+                onPress={() => {
+                  if (isFavorite(data.name)) {
+                    removeFavorite(data.name);
+                  } else {
+                    addFavorite({
+                      name,
+                      url,
+                      data,
+                    });
+                  }
+                }}>
                 <HeartIcon
-                  fill={isFavorite ? '#ef4444' : '#f1f5f9'}
+                  fill={isFavorite(data.name) ? '#ef4444' : '#f1f5f9'}
                   className="text-red-500"
                 />
               </TouchableOpacity>
