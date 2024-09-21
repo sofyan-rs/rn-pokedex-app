@@ -46,13 +46,14 @@ export default function SearchBox({search, setSearch}: ISearchBox) {
           size={24}
         />
         <TextInput
-          className="flex-1 bg-white pl-10 pr-5 py-2 rounded-full"
+          className="flex-1 text-slate-700 bg-white pl-10 pr-5 py-2 rounded-full"
+          placeholderTextColor={'#64748b'}
           placeholder="E.g. Pikachu"
           onChangeText={text => setSearchInput(text)}
           value={searchInput}
         />
         <TouchableOpacity
-          className="absolute right-1 bg-slate-700 px-5 py-2 rounded-full ml-2"
+          className="absolute right-1 bg-slate-700 px-5 py-2.5 rounded-full ml-2"
           onPress={() => setSearch(searchInput)}>
           <Text className="text-white">GO</Text>
         </TouchableOpacity>
