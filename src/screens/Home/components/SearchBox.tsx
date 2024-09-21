@@ -1,7 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {SearchIcon} from 'lucide-react-native';
+import {AlignLeftIcon, SearchIcon} from 'lucide-react-native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../types/navigation.type';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 interface ISearchBox {
   search: string;
@@ -9,6 +18,9 @@ interface ISearchBox {
 }
 
 export default function SearchBox({search, setSearch}: ISearchBox) {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
@@ -16,11 +28,19 @@ export default function SearchBox({search, setSearch}: ISearchBox) {
   }, [search]);
 
   return (
-    <View className="bg-blue-700 px-5 py-8" style={{elevation: 10}}>
-      <Text className="text-white font-semibold text-2xl mb-5">
-        Who are you looking for?
-      </Text>
-      <View className="relative flex-row items-center">
+    <View className="bg-blue-700 py-5" style={{elevation: 10}}>
+      <View className="flex-row items-center px-2 mb-5">
+        <TouchableHighlight
+          className="p-2.5 rounded-full mr-1"
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          underlayColor={'#2563eb'}>
+          <AlignLeftIcon className="text-white" />
+        </TouchableHighlight>
+        <Text className="text-white font-semibold text-2xl">
+          Who are you looking for?
+        </Text>
+      </View>
+      <View className="relative flex-row items-center mx-5">
         <SearchIcon
           className="text-slate-600 absolute left-2 z-[999]"
           size={24}

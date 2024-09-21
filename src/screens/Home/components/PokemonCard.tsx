@@ -1,8 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import useGetPokemonDetails from '../../../hooks/getPokemonDetails';
+import useGetPokemonDetails from '../../../hooks/fetch/useGetPokemonDetails';
 import BadgePokemonType from '../../../components/UI/Badge/BadgePokemonType';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../types/navigation.type';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {getPokemonIndex} from '../../../lib/utils/getPokemonIndex';
 
 interface IPokemonCard {
   item: {
@@ -12,18 +16,20 @@ interface IPokemonCard {
 }
 
 export default function PokemonCard({item}: IPokemonCard) {
-  const {isLoading, pokemonDetails} = useGetPokemonDetails(item.url);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  function pad(id: string, length: number) {
-    var str = '' + id;
-    while (str.length < length) {
-      str = '0' + str;
-    }
-    return str;
-  }
+  const {isLoading, pokemonDetails} = useGetPokemonDetails(item.url);
 
   return (
     <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('PokemonDetail', {
+          name: item.name,
+          url: item.url,
+          data: pokemonDetails,
+        })
+      }
       className="bg-white rounded-lg overflow-hidden shadow-slate-400 mb-3 mx-3"
       style={{elevation: 5}}>
       {!isLoading && pokemonDetails && (
@@ -50,7 +56,7 @@ export default function PokemonCard({item}: IPokemonCard) {
         </View>
       )}
       <Text className="absolute right-2 top-2 text-slate-500">
-        #{pad(pokemonDetails.id, 3)}
+        #{getPokemonIndex(pokemonDetails.id, 3)}
       </Text>
     </TouchableOpacity>
   );

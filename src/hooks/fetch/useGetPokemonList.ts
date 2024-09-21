@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {ToastMessage} from '../components/UI/Toast/ToastMessage';
+import {ToastMessage} from '../../components/UI/Toast/ToastMessage';
 import axios from 'axios';
 
 export default function useGetPokemonList(searchQuery: string) {

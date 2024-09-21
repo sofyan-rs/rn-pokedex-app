@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SearchBox from './components/SearchBox';
 import PokemonCard from './components/PokemonCard';
-import useGetPokemonList from '../../hooks/getPokemonList';
+import useGetPokemonList from '../../hooks/fetch/useGetPokemonList';
 import {FlatList, RefreshControl, Text, View} from 'react-native';
 
 export default function HomeScreen() {
